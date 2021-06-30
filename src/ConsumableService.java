@@ -87,14 +87,16 @@ public class ConsumableService {
         if (type == 0) {
             editConsumable();
         } else if (isValidTye(type)) {
-            if (type == 1) chooseEditAble(type, bookConsumables);
-            else if (type == 2) chooseEditAble(type, seriesConsumables);
-            else chooseEditAble(type, movieConsumables);
+            if (checkIsDataAvailable(type)) {
+                if (type == 1) chooseEditAble(type, bookConsumables);
+                else if (type == 2) chooseEditAble(type, seriesConsumables);
+                else chooseEditAble(type, movieConsumables);
+            }
         }
     }
 
     public void chooseEditAble(int type, ArrayList<Consumable> consumables) {
-        System.out.print("\nEnter a number to edit (enter 0 to exit): ");
+        System.out.print("\nEnter any serial no to edit (enter 0 to exit): ");
         int number = scanner.nextInt();
 
         if (number != 0) {
@@ -198,14 +200,16 @@ public class ConsumableService {
         if (type == 0) {
             deleteConsumable();
         } else if (isValidTye(type)) {
-            if (type == 1) delete(type, bookConsumables);
-            else if (type == 2) delete(type, seriesConsumables);
-            else delete(type, movieConsumables);
+            if (checkIsDataAvailable(type)) {
+                if (type == 1) delete(type, bookConsumables);
+                else if (type == 2) delete(type, seriesConsumables);
+                else delete(type, movieConsumables);
+            }
         }
     }
 
     public void delete(int type, ArrayList<Consumable> consumables) {
-        System.out.print("\nchoose a number to delete (enter 0 to exit): ");
+        System.out.print("\nchoose any serial no to delete (enter 0 to exit): ");
         int number = scanner.nextInt();
         if (number != 0) {
             if (number > 0 && number <= consumables.size()) {
@@ -241,8 +245,10 @@ public class ConsumableService {
         if (type == 0) {
             showConsumables();
         } else if (isValidTye(type)) {
-            System.out.print("\nyou can pick one & see the full details (enter 0 to exit): ");
-            showIndividualConsumable(type);
+            if (checkIsDataAvailable(type)) {
+                System.out.print("\npick any serial no & see the full details (enter 0 to exit): ");
+                showIndividualConsumable(type);
+            }
         }
     }
 
@@ -257,22 +263,36 @@ public class ConsumableService {
 
     public void printIndividual(int type, int number, ArrayList<Consumable> consumables) {
         if (number > 0 && number <= consumables.size()) {
-            System.out.print("\nname\t consumptionStartDate\t consumptionEndDate\t hrsOfConsumption\t daysOfConsumption\t rating\n");
+            String leftAlignFormat = "| %-20s | %-22s | %-22s | %-20d | %-19d | %-7s |%n";
+
+            System.out.format("+----------------------+------------------------+------------------------+----------------------+---------------------+---------+%n");
+            System.out.format("|          Name        | Consumption Start Date | Consumption Start Date | Hours Of Consumption | Days Of Consumption | Rating  |%n");
+            System.out.format("+----------------------+------------------------+------------------------+----------------------+---------------------+---------+%n");
+
             Consumable consumable = consumables.get(number - 1);
-            System.out.println(consumable.getName() + "\t" + consumable.getConsumptionStartDate() + "\t" + consumable.getConsumptionEndDate() + "\t" +
-                    consumable.getTotalConsumptionTime() + "\t" + consumable.getTotalConsumptionDays() + "\t" + consumable.getRating() + "\n");
+            System.out.format(leftAlignFormat, consumable.getName(), consumable.getConsumptionStartDate(), consumable.getConsumptionEndDate(),
+                    consumable.getTotalConsumptionTime(), consumable.getTotalConsumptionDays(), consumable.getRating());
+            System.out.format("+----------------------+------------------------+------------------------+----------------------+---------------------+---------+%n");
+
         } else {
             System.out.println("choose a valid number (enter 0 to exit): ");
             showIndividualConsumable(type);
         }
     }
 
+    private boolean checkIsDataAvailable(int type) {
+        if (type == 1) return bookConsumables.size() > 0;
+        else if (type == 2) return seriesConsumables.size() > 0;
+        else if (type == 3) return movieConsumables.size() > 0;
+        return false;
+    }
+
     public int listOfConsumables() {
         int type = selectConsumableType();
         if (isValidTye(type)) {
-            if (type == 1) printConsumables(bookConsumables);
-            else if (type == 2) printConsumables(seriesConsumables);
-            else printConsumables(movieConsumables);
+            if (type == 1) printConsumables(type, bookConsumables);
+            else if (type == 2) printConsumables(type, seriesConsumables);
+            else printConsumables(type, movieConsumables);
             return type;
         } else {
             System.out.println("Wrong selection. Please choose again\n");
@@ -280,15 +300,26 @@ public class ConsumableService {
         }
     }
 
-    public void printConsumables(ArrayList<Consumable> consumables) {
+    public void printConsumables(int type, ArrayList<Consumable> consumables) {
         if (consumables.size() > 0) {
-            System.out.println("\nserNo\t name\t hrsOfConsumption\t daysOfConsumption\t rating");
+
+            String leftAlignFormat = "| %-9d | %-20s | %-20d | %-19d | %-7s |%n";
+
+            System.out.format("+-----------+----------------------+----------------------+---------------------+---------+%n");
+            System.out.format("| Serial No |          Name        | Hours Of Consumption | Days Of Consumption | Rating  |%n");
+            System.out.format("+-----------+----------------------+----------------------+---------------------+---------+%n");
             for (int i = 0; i < consumables.size(); i++) {
                 Consumable consumable = consumables.get(i);
-                System.out.print((i + 1) + ".\t" + consumable.getName() + "\t" + consumable.getTotalConsumptionTime() + "\t" +
-                        consumable.getTotalConsumptionDays() + "\t" + consumable.getRating() + "\n");
+                System.out.format(leftAlignFormat, (i + 1), consumable.getName(), consumable.getTotalConsumptionTime(),
+                        consumable.getTotalConsumptionDays(), consumable.getRating());
             }
-        } else System.out.println("not found any");
+            System.out.format("+-----------+----------------------+----------------------+---------------------+---------+%n");
+
+        } else {
+            if (type == 1) System.out.println("No consumable found under BOOK");
+            else if (type == 2) System.out.println("No consumable found under SERIES");
+            else if (type == 3) System.out.println("No consumable found under MOVIE");
+        }
     }
 
     public void showOverallInfo() {
