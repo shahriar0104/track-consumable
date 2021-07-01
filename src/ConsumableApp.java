@@ -1,3 +1,5 @@
+import Sevices.ConsumableService;
+
 import java.util.Scanner;
 
 public class ConsumableApp {
@@ -14,7 +16,7 @@ public class ConsumableApp {
                     "To delete a consumable enter 3. \n" +
                     "To see the list of consumables enter 4. \n" +
                     "To see overall info enter 5. \n" +
-                    "To exit enter 6 \n");
+                    "To exit enter 0 \n");
 
             System.out.print("Enter your selection: ");
             int inputConsumable = scanner.nextInt();
@@ -39,7 +41,7 @@ public class ConsumableApp {
                     service.showOverallInfo();
                     continue;
 
-                case 6:
+                case 0:
                     System.out.println("Exiting from system...");
                     flag = false;
                     break;

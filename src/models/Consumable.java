@@ -1,14 +1,13 @@
 package models;
 
 public class Consumable {
-    private String name;
-    private String consumptionStartDate;
-    private String consumptionEndDate;
-    private int totalConsumptionTime;
-    private String rating;
-    private int totalConsumptionDays;
-    private boolean isEditable;
-    private int consumableType;
+    protected String name;
+    protected String consumptionStartDate;
+    protected String consumptionEndDate;
+    protected int totalConsumptionTime;
+    protected String rating;
+    protected int totalConsumptionDays;
+    protected boolean isEditable;
 
     public String getName() {
         return name;
@@ -66,14 +65,6 @@ public class Consumable {
         isEditable = editable;
     }
 
-    public int getConsumableType() {
-        return consumableType;
-    }
-
-    public void setConsumableType(int consumableType) {
-        this.consumableType = consumableType;
-    }
-
     @Override
     public String toString() {
         return "Genre{" +
@@ -84,7 +75,6 @@ public class Consumable {
                 ", rating='" + rating + '\'' +
                 ", totalConsumptionDays=" + totalConsumptionDays +
                 ", isEditable=" + isEditable +
-                ", consumableType=" + consumableType +
                 '}';
     }
 }
