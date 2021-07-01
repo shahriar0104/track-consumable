@@ -132,14 +132,24 @@ public class ConsumableService {
                     String conTimeInString = scanner.nextLine();
                     if (!conTimeInString.isEmpty()) {
                         consumable.setTotalConsumptionTime(consumable.getTotalConsumptionTime() + Integer.parseInt(conTimeInString));
-                        overAllInfo.setBookSumOfConsumptionTime(overAllInfo.getBookSumOfConsumptionTime() + Integer.parseInt(conTimeInString));
+                        if (type == 1)
+                            overAllInfo.setBookSumOfConsumptionTime(overAllInfo.getBookSumOfConsumptionTime() + Integer.parseInt(conTimeInString));
+                        else if (type == 2)
+                            overAllInfo.setSeriesSumOfConsumptionTime(overAllInfo.getSeriesSumOfConsumptionTime() + Integer.parseInt(conTimeInString));
+                        else if (type == 3)
+                            overAllInfo.setMovieSumOfConsumptionTime(overAllInfo.getMovieSumOfConsumptionTime() + Integer.parseInt(conTimeInString));
                     }
 
                     System.out.println("Enter days of consumption to add: ");
                     String conDaysInString = scanner.nextLine();
                     if (!conDaysInString.isEmpty()) {
                         consumable.setTotalConsumptionDays(consumable.getTotalConsumptionDays() + Integer.parseInt(conDaysInString));
-                        overAllInfo.setBookSumOfConsumptionDays(overAllInfo.getBookSumOfConsumptionDays() + Integer.parseInt(conDaysInString));
+                        if (type == 1)
+                            overAllInfo.setBookSumOfConsumptionDays(overAllInfo.getBookSumOfConsumptionDays() + Integer.parseInt(conDaysInString));
+                        else if (type == 2)
+                            overAllInfo.setSeriesSumOfConsumptionDays(overAllInfo.getSeriesSumOfConsumptionDays() + Integer.parseInt(conDaysInString));
+                        else if (type == 3)
+                            overAllInfo.setMovieSumOfConsumptionDays(overAllInfo.getMovieSumOfConsumptionDays() + Integer.parseInt(conDaysInString));
                     }
 
                     continue;
